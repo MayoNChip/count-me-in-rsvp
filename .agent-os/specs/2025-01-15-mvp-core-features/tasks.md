@@ -17,15 +17,15 @@ These are the tasks to be completed for the spec detailed in @.agent-os/specs/20
   - [x] 1.7 Create basic layout structure with navigation
   - [x] 1.8 Verify all dependencies are working
 
-- [ ] 2. Database Setup and Migrations
-  - [ ] 2.1 Write tests for database schema
-  - [ ] 2.2 Create PostgreSQL database (Supabase) and get credentials
-  - [ ] 2.3 Create Drizzle schema for events table
-  - [ ] 2.4 Create Drizzle schema for guests table
-  - [ ] 2.5 Create Drizzle schema for rsvp_responses table
-  - [ ] 2.6 Generate and run migrations with drizzle-kit
-  - [ ] 2.7 Setup database indexes and constraints
-  - [ ] 2.8 Verify all migrations and test with sample data
+- [x] 2. Database Setup and Migrations
+  - [x] 2.1 Write tests for database schema
+  - [x] 2.2 Create PostgreSQL database (Supabase) and get credentials
+  - [x] 2.3 Create Drizzle schema for events table
+  - [x] 2.4 Create Drizzle schema for guests table
+  - [x] 2.5 Create Drizzle schema for rsvp_responses table
+  - [x] 2.6 Generate and run migrations with drizzle-kit
+  - [x] 2.7 Setup database indexes and constraints
+  - [x] 2.8 Verify all migrations and test with sample data
 
 - [ ] 3. Event Management System
   - [ ] 3.1 Write tests for event Server Actions

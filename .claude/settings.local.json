@@ -1,6 +1,11 @@
 {
   "permissions": {
-    "allow": ["Bash(mkdir:*)", "Bash(pnpm add:*)"],
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(pnpm add:*)",
+      "Bash(npm run test:*)",
+      "Bash(npx drizzle-kit:*)"
+    ],
     "deny": [],
     "ask": []
   }
