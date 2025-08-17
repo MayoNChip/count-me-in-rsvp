@@ -1,5 +1,5 @@
 import { twilioClient } from './twilio';
-import { getInvitationTemplate, META_TEMPLATES, MetaTemplate } from './meta-templates';
+import { getInvitationTemplate } from './meta-templates';
 import { ConversationTracker } from './conversation-tracker';
 
 export interface WhatsAppResponse {
@@ -47,9 +47,10 @@ export class WhatsAppService {
         from: message.from || `whatsapp:${this.fromNumber}`,
         to: message.to
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Meta template send error:', error);
-      throw new Error(`Failed to send Meta template: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to send Meta template: ${errorMessage}`);
     }
   }
 
@@ -72,9 +73,10 @@ export class WhatsAppService {
         from: message.from || `whatsapp:${this.fromNumber}`,
         to: message.to
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Free-form message send error:', error);
-      throw new Error(`Failed to send free-form message: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to send free-form message: ${errorMessage}`);
     }
   }
 

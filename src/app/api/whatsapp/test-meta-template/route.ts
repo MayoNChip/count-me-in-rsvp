@@ -38,13 +38,13 @@ export async function POST(request: NextRequest) {
       }
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Meta template send error:', error);
     return NextResponse.json({
       success: false,
       error: "Failed to send Meta template",
-      details: error.message,
-      code: error.code
+      details: error instanceof Error ? error.message : String(error),
+      code: error && typeof error === 'object' && 'code' in error ? error.code : null
     }, { status: 500 });
   }
 }

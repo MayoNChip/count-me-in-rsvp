@@ -5,7 +5,7 @@ const baseGuestSchema = {
   name: z.string().min(1, 'Guest name is required').max(255, 'Name too long'),
   email: z.string().email('Valid email is required').optional().or(z.literal('')),
   phone: z.string().max(50, 'Phone number too long').optional().or(z.literal('')),
-  maxGuests: z.number().min(1, 'Must allow at least 1 guest').max(10, 'Maximum 10 guests allowed').default(1),
+  maxGuests: z.number().min(1, 'Must allow at least 1 guest').max(10, 'Maximum 10 guests allowed'),
   notes: z.string().optional().or(z.literal('')),
 }
 
@@ -47,7 +47,7 @@ export const bulkImportGuestsSchema = z.object({
 // RSVP response schema
 export const rsvpResponseSchema = z.object({
   guestId: z.string().uuid('Valid guest ID is required'),
-  status: z.enum(['yes', 'no', 'maybe'], { required_error: 'RSVP status is required' }),
+  status: z.enum(['yes', 'no', 'maybe'], { message: 'RSVP status is required' }),
   numOfGuests: z.number().min(0, 'Number of guests cannot be negative').max(10, 'Maximum 10 guests'),
   guestNames: z.string().optional().or(z.literal('')),
   message: z.string().optional().or(z.literal('')),

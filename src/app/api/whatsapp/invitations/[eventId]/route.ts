@@ -34,7 +34,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({
         success: false,
         error: 'Invalid event ID',
-        details: eventValidation.error.errors
+        details: eventValidation.error.issues
       }, { status: 400 })
     }
 
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({
         success: false,
         error: 'Invalid query parameters',
-        details: queryValidation.error.errors
+        details: queryValidation.error.issues
       }, { status: 400 })
     }
 
@@ -69,8 +69,35 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       }, { status: 404 })
     }
 
-    // Build base query
-    let query = db
+    // Apply filters
+    const filters = [eq(whatsappInvitations.eventId, eventId)]
+
+    if (status) {
+      filters.push(eq(whatsappInvitations.twilioStatus, status))
+    }
+
+    if (template) {
+      filters.push(eq(whatsappInvitations.templateName, template))
+    }
+
+    // Determine order column
+    let orderColumn
+    switch (sortBy) {
+      case 'sentAt':
+        orderColumn = sortOrder === 'asc' ? whatsappInvitations.sentAt : desc(whatsappInvitations.sentAt)
+        break
+      case 'guestName':
+        orderColumn = sortOrder === 'asc' ? guests.name : desc(guests.name)
+        break
+      case 'status':
+        orderColumn = sortOrder === 'asc' ? whatsappInvitations.twilioStatus : desc(whatsappInvitations.twilioStatus)
+        break
+      default: // createdAt
+        orderColumn = sortOrder === 'asc' ? whatsappInvitations.createdAt : desc(whatsappInvitations.createdAt)
+    }
+
+    // Build complete query in one chain
+    const invitations = await db
       .select({
         id: whatsappInvitations.id,
         eventId: whatsappInvitations.eventId,
@@ -94,51 +121,16 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       .from(whatsappInvitations)
       .leftJoin(guests, eq(whatsappInvitations.guestId, guests.id))
       .leftJoin(whatsappTemplates, eq(whatsappTemplates.name, whatsappInvitations.templateName))
-      .where(eq(whatsappInvitations.eventId, eventId))
-
-    // Apply filters
-    const filters = [eq(whatsappInvitations.eventId, eventId)]
-
-    if (status) {
-      filters.push(eq(whatsappInvitations.twilioStatus, status))
-    }
-
-    if (template) {
-      filters.push(eq(whatsappInvitations.templateName, template))
-    }
-
-    if (filters.length > 1) {
-      query = query.where(and(...filters))
-    }
-
-    // Apply sorting
-    switch (sortBy) {
-      case 'sentAt':
-        query = query.orderBy(sortOrder === 'asc' ? whatsappInvitations.sentAt : desc(whatsappInvitations.sentAt))
-        break
-      case 'guestName':
-        query = query.orderBy(sortOrder === 'asc' ? guests.name : desc(guests.name))
-        break
-      case 'status':
-        query = query.orderBy(sortOrder === 'asc' ? whatsappInvitations.twilioStatus : desc(whatsappInvitations.twilioStatus))
-        break
-      default: // createdAt
-        query = query.orderBy(sortOrder === 'asc' ? whatsappInvitations.createdAt : desc(whatsappInvitations.createdAt))
-    }
-
-    // Apply pagination
-    query = query.limit(limit).offset(offset)
-
-    // Execute query
-    const invitations = await query
+      .where(and(...filters))
+      .orderBy(orderColumn)
+      .limit(limit)
+      .offset(offset)
 
     // Get total count for pagination
     const [{ count }] = await db
       .select({ count: db.$count(whatsappInvitations) })
       .from(whatsappInvitations)
-      .where(
-        filters.length > 1 ? and(...filters) : eq(whatsappInvitations.eventId, eventId)
-      )
+      .where(and(...filters))
 
     // Calculate statistics
     const stats = await calculateInvitationStats(eventId)

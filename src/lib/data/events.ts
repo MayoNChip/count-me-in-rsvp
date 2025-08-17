@@ -4,29 +4,43 @@ import { eq, count, sql } from 'drizzle-orm'
 
 export async function getEvents(organizerEmail?: string) {
   try {
-    let query = db
-      .select({
-        id: events.id,
-        name: events.name,
-        date: events.date,
-        time: events.time,
-        location: events.location,
-        description: events.description,
-        organizerEmail: events.organizerEmail,
-        createdAt: events.createdAt,
-        updatedAt: events.updatedAt,
-        guestCount: sql<number>`count(${guests.id})`.as('guest_count'),
-      })
-      .from(events)
-      .leftJoin(guests, eq(events.id, guests.eventId))
-      .groupBy(events.id)
-
-    // If organizerEmail is provided, filter by it, otherwise show all events
-    if (organizerEmail) {
-      query = query.where(eq(events.organizerEmail, organizerEmail))
-    }
-
-    const eventList = await query.orderBy(events.date)
+    // Build the query based on whether organizerEmail is provided
+    const eventList = organizerEmail 
+      ? await db
+          .select({
+            id: events.id,
+            name: events.name,
+            date: events.date,
+            time: events.time,
+            location: events.location,
+            description: events.description,
+            organizerEmail: events.organizerEmail,
+            createdAt: events.createdAt,
+            updatedAt: events.updatedAt,
+            guestCount: sql<number>`count(${guests.id})`.as('guest_count'),
+          })
+          .from(events)
+          .leftJoin(guests, eq(events.id, guests.eventId))
+          .where(eq(events.organizerEmail, organizerEmail))
+          .groupBy(events.id)
+          .orderBy(events.date)
+      : await db
+          .select({
+            id: events.id,
+            name: events.name,
+            date: events.date,
+            time: events.time,
+            location: events.location,
+            description: events.description,
+            organizerEmail: events.organizerEmail,
+            createdAt: events.createdAt,
+            updatedAt: events.updatedAt,
+            guestCount: sql<number>`count(${guests.id})`.as('guest_count'),
+          })
+          .from(events)
+          .leftJoin(guests, eq(events.id, guests.eventId))
+          .groupBy(events.id)
+          .orderBy(events.date)
 
     return eventList
   } catch (error) {

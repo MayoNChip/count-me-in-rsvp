@@ -91,10 +91,10 @@ export async function sendInvitation(input: SendInvitationInput): Promise<Action
         }
         break
         
-      case 'sms':
+      case 'whatsapp':
         if (guestData.phone) {
-          // TODO: Send SMS invitation
-          console.log(`Sending SMS invitation to ${guestData.phone}`)
+          // TODO: Send WhatsApp invitation
+          console.log(`Sending WhatsApp invitation to ${guestData.phone}`)
           console.log(`RSVP URL: ${rsvpUrl}`)
           sent = true
         } else {

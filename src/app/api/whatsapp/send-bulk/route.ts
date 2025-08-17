@@ -11,7 +11,7 @@ const SendBulkSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required').optional(),
   guestIds: z.array(z.string().min(1)).min(1, 'At least one guest ID is required').max(100, 'Maximum 100 guests per bulk operation'),
   templateName: z.string().min(1, 'Template name is required'),
-  variables: z.record(z.string()).default({}),
+  variables: z.record(z.string(), z.string()).default({}),
   priority: z.enum(['low', 'normal', 'high']).default('normal'),
   batchSize: z.number().min(1).max(50).default(10) // Process in batches to avoid overwhelming the queue
 })
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: false,
         error: 'Validation failed',
-        details: validation.error.errors
+        details: validation.error.issues
       }, { status: 400 })
     }
 
@@ -56,8 +56,14 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
+    // Build filters for guest query
+    const guestFilters = [inArray(guests.id, guestIds)]
+    if (eventId) {
+      guestFilters.push(eq(guests.eventId, eventId))
+    }
+
     // Build query to get guests
-    let guestQuery = db
+    const guestList = await db
       .select({
         id: guests.id,
         name: guests.name,
@@ -67,17 +73,7 @@ export async function POST(request: NextRequest) {
       })
       .from(guests)
       .innerJoin(events, eq(guests.eventId, events.id))
-      .where(inArray(guests.id, guestIds))
-
-    // If eventId is provided, add it to the filter
-    if (eventId) {
-      guestQuery = guestQuery.where(and(
-        inArray(guests.id, guestIds),
-        eq(guests.eventId, eventId)
-      ))
-    }
-
-    const guestList = await guestQuery
+      .where(and(...guestFilters))
 
     if (guestList.length === 0) {
       return NextResponse.json({
@@ -144,7 +140,7 @@ export async function POST(request: NextRequest) {
         eventId: guest.eventId,
         templateName: template.name,
         variables: finalVariables,
-        phone: guest.phone
+        phone: guest.phone || ''
       }
 
       jobs.push(jobData)

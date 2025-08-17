@@ -30,33 +30,35 @@ export async function POST(request: NextRequest) {
       to: twilioMessage.to
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const twilioError = error as { message?: string; code?: number; status?: number; moreInfo?: string; details?: string };
+    
     console.error('WhatsApp send error details:', {
-      message: error.message,
-      code: error.code,
-      status: error.status,
-      moreInfo: error.moreInfo,
-      details: error.details
+      message: twilioError.message,
+      code: twilioError.code,
+      status: twilioError.status,
+      moreInfo: twilioError.moreInfo,
+      details: twilioError.details
     });
 
     // Provide specific troubleshooting based on error code
     let troubleshooting = "";
-    if (error.code === 63016) {
+    if (twilioError.code === 63016) {
       troubleshooting = "The number is not a valid WhatsApp number or hasn't opted in to receive messages from your WhatsApp Business number.";
-    } else if (error.code === 63015) {
+    } else if (twilioError.code === 63015) {
       troubleshooting = "The WhatsApp template is not approved or message doesn't match an approved template.";
-    } else if (error.code === 63014) {
+    } else if (twilioError.code === 63014) {
       troubleshooting = "Your WhatsApp Business number is not approved or properly configured.";
-    } else if (error.message?.includes("Channel")) {
+    } else if (twilioError.message?.includes("Channel")) {
       troubleshooting = "WhatsApp sender number configuration issue. Check Twilio Console > Messaging > WhatsApp > Senders.";
     }
 
     return NextResponse.json({
       success: false,
       error: "Failed to send WhatsApp message",
-      errorCode: error.code,
-      details: error.message,
-      moreInfo: error.moreInfo,
+      errorCode: twilioError.code,
+      details: twilioError.message,
+      moreInfo: twilioError.moreInfo,
       troubleshooting,
       suggestions: [
         "1. Check that +15558157377 is properly configured in Twilio Console",

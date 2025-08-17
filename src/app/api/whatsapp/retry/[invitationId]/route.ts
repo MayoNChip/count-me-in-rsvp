@@ -16,7 +16,7 @@ const RetryRequestSchema = z.object({
   priority: z.enum(['low', 'normal', 'high']).default('normal'),
   updateTemplate: z.boolean().default(false),
   templateName: z.string().optional(),
-  variables: z.record(z.string()).optional()
+  variables: z.record(z.string(), z.string()).optional()
 })
 
 interface RouteParams {
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({
         success: false,
         error: 'Invalid invitation ID',
-        details: paramValidation.error.errors
+        details: paramValidation.error.issues
       }, { status: 400 })
     }
 
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({
         success: false,
         error: 'Invalid request body',
-        details: bodyValidation.error.errors
+        details: bodyValidation.error.issues
       }, { status: 400 })
     }
 
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     }
 
     // Determine variables to use
-    let finalVariables = invitation.templateVariables || {}
+    let finalVariables: Record<string, string> = (invitation.templateVariables as Record<string, string>) || {}
 
     // Merge with new variables if provided
     if (variables) {
@@ -150,8 +150,8 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     // Ensure default variables are present
     finalVariables = {
-      guest_name: invitation.guestName,
-      event_name: invitation.eventName,
+      guest_name: invitation.guestName || 'Guest',
+      event_name: invitation.eventName || 'Event',
       ...finalVariables
     }
 
@@ -187,7 +187,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     // Render new message content
     const templateService = new TemplateService()
-    const newMessageContent = templateService.renderTemplate(finalTemplate.content, finalVariables)
+    const newMessageContent = templateService.renderTemplate(finalTemplate.content || '', finalVariables)
 
     // Update invitation record
     await db.update(whatsappInvitations)

@@ -61,8 +61,8 @@ export class TemplateService {
         name: template.name,
         displayName: template.displayName,
         content: template.content,
-        variables: template.variables,
-        isActive: template.isActive,
+        variables: template.variables as string[],
+        isActive: template.isActive || false,
         createdAt: template.createdAt,
         updatedAt: template.updatedAt
       }
@@ -91,8 +91,8 @@ export class TemplateService {
         name: template.name,
         displayName: template.displayName,
         content: template.content,
-        variables: template.variables,
-        isActive: template.isActive,
+        variables: template.variables as string[],
+        isActive: template.isActive || false,
         createdAt: template.createdAt,
         updatedAt: template.updatedAt
       }
@@ -116,8 +116,8 @@ export class TemplateService {
         name: template.name,
         displayName: template.displayName,
         content: template.content,
-        variables: template.variables,
-        isActive: template.isActive,
+        variables: template.variables as string[],
+        isActive: template.isActive || false,
         createdAt: template.createdAt,
         updatedAt: template.updatedAt
       }))
@@ -292,8 +292,8 @@ export class TemplateService {
         name: template.name,
         displayName: template.displayName,
         content: template.content,
-        variables: template.variables,
-        isActive: template.isActive,
+        variables: template.variables as string[],
+        isActive: template.isActive || false,
         createdAt: template.createdAt,
         updatedAt: template.updatedAt
       }
@@ -334,8 +334,8 @@ export class TemplateService {
         name: template.name,
         displayName: template.displayName,
         content: template.content,
-        variables: template.variables,
-        isActive: template.isActive,
+        variables: template.variables as string[],
+        isActive: template.isActive || false,
         createdAt: template.createdAt,
         updatedAt: template.updatedAt
       }

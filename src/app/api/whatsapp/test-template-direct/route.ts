@@ -27,12 +27,10 @@ export async function POST(request: NextRequest) {
       result = await whatsappService.sendInvitation(
         to,
         guestName,
-        eventName,
-        eventDate,
-        eventTime
+        "test_guest_id"
       );
     } else if (templateType === "welcome") {
-      result = await whatsappService.sendWelcome(to, guestName);
+      result = await whatsappService.sendMessage(to, "test_guest_id", `Welcome ${guestName}!`, guestName);
     } else {
       return NextResponse.json({
         success: false,

@@ -15,6 +15,8 @@ export type GuestWithRsvp = {
   invitationStatus: string
   invitationSentAt: Date | null
   invitationMethod: string | null
+  rsvpStatus: string | null
+  guestCount: number | null
   createdAt: Date
   updatedAt: Date
   rsvp: {
@@ -69,6 +71,8 @@ export async function getGuestsByEvent(eventId: string): Promise<GuestWithRsvp[]
       invitationStatus: guest.invitationStatus || 'not_sent',
       invitationSentAt: guest.invitationSentAt,
       invitationMethod: guest.invitationMethod,
+      rsvpStatus: guest.rsvpStatus,
+      guestCount: guest.rsvpNumOfGuests,
       createdAt: guest.createdAt,
       updatedAt: guest.updatedAt,
       rsvp: guest.rsvpId ? {
@@ -98,6 +102,9 @@ export async function getGuestById(id: string): Promise<GuestWithRsvp | null> {
         token: guests.token,
         maxGuests: guests.maxGuests,
         notes: guests.notes,
+        invitationStatus: guests.invitationStatus,
+        invitationSentAt: guests.invitationSentAt,
+        invitationMethod: guests.invitationMethod,
         createdAt: guests.createdAt,
         updatedAt: guests.updatedAt,
         rsvpId: rsvpResponses.id,
@@ -126,6 +133,11 @@ export async function getGuestById(id: string): Promise<GuestWithRsvp | null> {
       token: guest.token,
       maxGuests: guest.maxGuests,
       notes: guest.notes,
+      invitationStatus: guest.invitationStatus || 'not_sent',
+      invitationSentAt: guest.invitationSentAt,
+      invitationMethod: guest.invitationMethod,
+      rsvpStatus: guest.rsvpStatus,
+      guestCount: guest.rsvpNumOfGuests,
       createdAt: guest.createdAt,
       updatedAt: guest.updatedAt,
       rsvp: guest.rsvpId ? {
@@ -155,6 +167,9 @@ export async function getGuestByToken(token: string): Promise<GuestWithRsvp | nu
         token: guests.token,
         maxGuests: guests.maxGuests,
         notes: guests.notes,
+        invitationStatus: guests.invitationStatus,
+        invitationSentAt: guests.invitationSentAt,
+        invitationMethod: guests.invitationMethod,
         createdAt: guests.createdAt,
         updatedAt: guests.updatedAt,
         rsvpId: rsvpResponses.id,
@@ -183,6 +198,11 @@ export async function getGuestByToken(token: string): Promise<GuestWithRsvp | nu
       token: guest.token,
       maxGuests: guest.maxGuests,
       notes: guest.notes,
+      invitationStatus: guest.invitationStatus || 'not_sent',
+      invitationSentAt: guest.invitationSentAt,
+      invitationMethod: guest.invitationMethod,
+      rsvpStatus: guest.rsvpStatus,
+      guestCount: guest.rsvpNumOfGuests,
       createdAt: guest.createdAt,
       updatedAt: guest.updatedAt,
       rsvp: guest.rsvpId ? {

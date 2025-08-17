@@ -32,20 +32,21 @@ export function SendInvitationsDialog({
   onOpenChange 
 }: SendInvitationsDialogProps) {
   const router = useRouter()
-  const [method, setMethod] = useState<'email' | 'sms'>('email')
+  const [method, setMethod] = useState<'email' | 'whatsapp' | 'manual'>('email')
   const [customMessage, setCustomMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   // Filter guests that can receive the selected method
   const eligibleGuests = selectedGuests.filter(guest => {
     if (method === 'email') return guest.email
-    if (method === 'sms') return guest.phone
+    if (method === 'whatsapp') return guest.phone
+    if (method === 'manual') return true
     return false
   })
 
   const handleSendInvitations = async () => {
     if (eligibleGuests.length === 0) {
-      toast.error(`No guests have ${method === 'email' ? 'email addresses' : 'phone numbers'}`)
+      toast.error(`No guests have ${method === 'email' ? 'email addresses' : method === 'whatsapp' ? 'phone numbers' : 'valid contact info'}`)
       return
     }
 
@@ -96,7 +97,7 @@ export function SendInvitationsDialog({
   }
 
   const emailCount = selectedGuests.filter(g => g.email).length
-  const smsCount = selectedGuests.filter(g => g.phone).length
+  const whatsappCount = selectedGuests.filter(g => g.phone).length
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -116,7 +117,7 @@ export function SendInvitationsDialog({
                 {selectedGuests.length} guest{selectedGuests.length !== 1 ? 's' : ''} selected
               </p>
               <p className="text-xs text-blue-600">
-                {emailCount} with email • {smsCount} with phone
+                {emailCount} with email • {whatsappCount} with phone
               </p>
             </div>
           </div>
@@ -144,17 +145,17 @@ export function SendInvitationsDialog({
 
               <Button
                 type="button"
-                onClick={() => setMethod('sms')}
+                onClick={() => setMethod('whatsapp')}
                 className={`p-4 h-auto flex-col gap-2 ${
-                  method === 'sms'
+                  method === 'whatsapp'
                     ? 'bg-green-500 text-white border-0'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-0'
                 }`}
               >
                 <MessageSquare className="h-5 w-5" />
                 <div className="text-center">
-                  <div className="font-medium">SMS</div>
-                  <div className="text-xs opacity-80">{smsCount} recipients</div>
+                  <div className="font-medium">WhatsApp</div>
+                  <div className="text-xs opacity-80">{whatsappCount} recipients</div>
                 </div>
               </Button>
             </div>

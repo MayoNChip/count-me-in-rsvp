@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { whatsappInvitations } from "@/lib/db/schema";
+import { whatsappInvitations, guests } from "@/lib/db/schema";
 import { eq, and, desc } from "drizzle-orm";
 
 export class ConversationTracker {
@@ -32,7 +32,7 @@ export class ConversationTracker {
         return false;
       }
 
-      const lastMessageTime = new Date(lastMessage[0].sentAt);
+      const lastMessageTime = new Date(lastMessage[0].sentAt || new Date());
       const now = new Date();
       const hoursSinceLastMessage = (now.getTime() - lastMessageTime.getTime()) / (1000 * 60 * 60);
 
@@ -51,8 +51,21 @@ export class ConversationTracker {
    */
   async recordTemplateMessage(guestId: string, templateSid: string, twilioSid: string): Promise<void> {
     try {
+      // Get the guest to find their eventId
+      const guest = await db
+        .select({ eventId: guests.eventId })
+        .from(guests)
+        .where(eq(guests.id, guestId))
+        .limit(1);
+
+      if (!guest.length) {
+        console.error('Guest not found for conversation tracking');
+        return;
+      }
+
       await db.insert(whatsappInvitations).values({
         guestId,
+        eventId: guest[0].eventId,
         templateName: `meta_template_${templateSid}`,
         twilioMessageSid: twilioSid,
         twilioStatus: "queued",

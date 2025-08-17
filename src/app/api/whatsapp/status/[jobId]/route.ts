@@ -25,7 +25,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({
         success: false,
         error: 'Invalid job ID',
-        details: validation.error.errors
+        details: validation.error.issues
       }, { status: 400 })
     }
 

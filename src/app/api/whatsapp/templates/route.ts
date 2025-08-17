@@ -4,9 +4,7 @@ import { twilioClient } from "@/lib/services/twilio";
 export async function GET(request: NextRequest) {
   try {
     // Get approved WhatsApp templates
-    const templates = await twilioClient.content.v1.contents.list({
-      contentTypes: ['whatsapp-template']
-    });
+    const templates = await twilioClient.content.v1.contents.list();
 
     return NextResponse.json({
       success: true,
@@ -15,8 +13,7 @@ export async function GET(request: NextRequest) {
         friendlyName: template.friendlyName,
         language: template.language,
         variables: template.variables,
-        types: template.types,
-        approvalRequests: template.approvalRequests
+        types: template.types
       })),
       count: templates.length,
       usage: {
