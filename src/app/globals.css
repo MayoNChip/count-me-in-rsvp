@@ -1,13 +1,66 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Modern fun theme with lime, amber, purple */
+  --background: #fafafa;
+  --foreground: #1a1a1a;
+  
+  /* Primary colors - vibrant lime */
+  --primary: #84cc16;
+  --primary-foreground: #ffffff;
+  
+  /* Secondary colors - warm amber */
+  --secondary: #f59e0b;
+  --secondary-foreground: #1c1917;
+  
+  /* Accent colors - electric purple */
+  --accent: #8b5cf6;
+  --accent-foreground: #ffffff;
+  
+  /* Muted colors - soft neutrals */
+  --muted: #f4f4f5;
+  --muted-foreground: #64748b;
+  
+  /* Border and inputs */
+  --border: #e2e8f0;
+  --input: #ffffff;
+  
+  /* Cards and surfaces */
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  
+  /* Destructive (for delete actions) */
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  
+  /* Success colors */
+  --success: #22c55e;
+  --success-foreground: #ffffff;
+  
+  /* Ring/focus colors */
+  --ring: #84cc16;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-ring: var(--ring);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -15,12 +68,171 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #f8fafc;
+    --primary: #a3e635;
+    --secondary: #fbbf24;
+    --accent: #a855f7;
+    --muted: #1e1e1e;
+    --card: #171717;
+    --border: #262626;
+    --input: #1e1e1e;
   }
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Modern fun animations */
+@keyframes pulse-gentle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes slide-up {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(132, 204, 22, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(132, 204, 22, 0.5); }
+}
+
+.pulse-gentle {
+  animation: pulse-gentle 3s ease-in-out infinite;
+}
+
+.slide-up {
+  animation: slide-up 0.6s ease-out;
+}
+
+.bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
+}
+
+.glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Clean solid backgrounds inspired by Floik design */
+.bg-fun {
+  background: #8b5cf6;
+}
+
+.bg-soft {
+  background: transparent;
+}
+
+.bg-lime {
+  background: #84cc16;
+}
+
+.bg-amber {
+  background: #f59e0b;
+}
+
+.bg-purple {
+  background: #8b5cf6;
+}
+
+.bg-blue {
+  background: #3b82f6;
+}
+
+.bg-pink {
+  background: #ec4899;
+}
+
+.bg-green {
+  background: #10b981;
+}
+
+/* Card styles like dribbble */
+.modern-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover animations */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Clean input styles */
+.clean-input {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 16px;
+  color: #1e293b;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Vertically center date and time inputs */
+.clean-input[type="date"],
+.clean-input[type="time"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clean-input:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.clean-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Clean button styles */
+.btn-clean {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 500;
+  color: #475569;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-clean:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  transform: translateY(-1px);
 }

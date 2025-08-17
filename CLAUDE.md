@@ -35,3 +35,4 @@ When asked to work on this codebase:
 - User's specific instructions override (or amend) instructions found in `.agent-os/specs/...`
 - Always adhere to established patterns, code style, and best practices documented above.
 - always use pnpm
+- **CRITICAL: NEVER run `pnpm run dev` without first checking if the server is already running on ports 3000-3010. Always check with `netstat` or similar before starting the dev server.**

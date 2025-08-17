@@ -8,6 +8,27 @@
       "when": 1755256559063,
       "tag": "0000_boring_annihilus",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1755262172849,
+      "tag": "0001_illegal_guardsmen",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1755375663937,
+      "tag": "0002_friendly_karma",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1755416792053,
+      "tag": "0003_loud_jack_power",
+      "breakpoints": true
     }
   ]
 }

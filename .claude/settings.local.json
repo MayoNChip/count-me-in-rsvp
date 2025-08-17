@@ -4,9 +4,21 @@
       "Bash(mkdir:*)",
       "Bash(pnpm add:*)",
       "Bash(npm run test:*)",
-      "Bash(npx drizzle-kit:*)"
+      "Bash(npx drizzle-kit:*)",
+      "Bash(pnpm run:*)",
+      "mcp__puppeteer__puppeteer_navigate",
+      "mcp__puppeteer__puppeteer_screenshot",
+      "mcp__puppeteer__puppeteer_click",
+      "Bash(pnpm test:*)",
+      "mcp__puppeteer__puppeteer_evaluate",
+      "mcp__puppeteer__puppeteer_fill",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(pnpm drizzle-kit:*)",
+      "Bash(npx tsx:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "defaultMode": "acceptEdits"
   }
 }

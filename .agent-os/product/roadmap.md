@@ -4,23 +4,23 @@
 > Version: 1.0.0
 > Status: Planning
 
-## Phase 1: Core MVP (1-2 weeks)
+## Phase 1: Core MVP (1-2 weeks) ✅ COMPLETED
 
 **Goal:** Build the essential RSVP functionality for a single event
 **Success Criteria:** Can create an event, add guests, and collect RSVPs
 
 ### Must-Have Features
 
-- [ ] Homepage with event overview - Design and implement landing page `S`
-- [ ] Event creation with database setup - Create events table and API `M`
-- [ ] Guest management system - Add guests table and CRUD operations `M`
-- [ ] RSVP response page - Guest-facing form for responses `S`
-- [ ] Guest list dashboard - View all guests and their status `S`
+- [x] Homepage with event overview - Design and implement landing page `S`
+- [x] Event creation with database setup - Create events table and API `M`
+- [x] Guest management system - Add guests table and CRUD operations `M`
+- [x] RSVP response page - Guest-facing form for responses `S`
+- [x] Guest list dashboard - View all guests and their status `S`
 
 ### Should-Have Features
 
-- [ ] Basic authentication for event organizers - Protect admin routes `S`
-- [ ] Unique RSVP links for guests - Generate secure guest tokens `XS`
+- [x] Basic authentication for event organizers - Protect admin routes `S`
+- [x] Unique RSVP links for guests - Generate secure guest tokens `XS`
 
 ### Dependencies
 
@@ -28,21 +28,22 @@
 - Database migrations for events and guests tables
 - shadcn/ui components installation
 
-## Phase 2: Enhanced User Experience (1 week)
+## Phase 2: Enhanced User Experience (1 week) ✅ COMPLETED
 
 **Goal:** Improve the interface and add response flexibility
 **Success Criteria:** Polished UI with "Maybe" option and better UX
 
 ### Must-Have Features
 
-- [ ] "Maybe" response option - Add uncertain status `XS`
-- [ ] Response confirmation page - Show success after RSVP `XS`
-- [ ] Mobile-responsive design - Optimize for all devices `S`
-- [ ] Loading states and error handling - Better user feedback `S`
+- [x] "Maybe" response option - Add uncertain status `XS`
+- [x] Response confirmation page - Show success after RSVP `XS`
+- [x] Mobile-responsive design - Optimize for all devices `S`
+- [x] Loading states and error handling - Better user feedback `S`
 
 ### Should-Have Features
 
-- [ ] Guest can update their response - Allow status changes `S`
+- [x] Guest can update their response - Allow status changes `S`
+- [x] Invitation image display - Upload and show custom invitation images on RSVP pages `M`
 - [ ] Custom event themes - Basic styling options `M`
 
 ### Dependencies
